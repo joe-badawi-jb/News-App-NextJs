@@ -1,11 +1,10 @@
-import { DUMMY_NEWS } from "@/dummy-news";
+import { getNewsItem } from "@/lib/news";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
-export default function SingleNews({ params }) {
+export default async function SingleNews({ params }) {
   const slug = params.slug;
-  const newsItem = DUMMY_NEWS.find((el) => el.slug === slug);
-
+  const newsItem = await getNewsItem(slug);
   // The below is added in order to redirect to the closest not found Component
   if (!newsItem) {
     notFound();

@@ -1,0 +1,55 @@
+"use client";
+
+import Link from "next/link";
+
+import Image from "next/image";
+import NewsList from "@/components/news-lis";
+import { useEffect, useState } from "react";
+
+export default function News() {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const [news, setNews] = useState();
+
+
+  // this is the client side fetching approach, it works fine but the news wont show in the page source when clicking (show page source),
+  // using the server side fetching approach helps resolve this issue, giving us some SEO advantage
+  useEffect(() => {
+    async function fetchNews() {
+      setIsLoading(true);
+      const response = await fetch("http://localhost:8080/news");
+
+      if (!response.ok) {
+        setIsLoading(false);
+        setError("Failed to fetch news.");
+      }
+
+      const news = await response.json();
+      setIsLoading(false);
+      setNews(news);
+    }
+
+    fetchNews();
+  }, []);
+
+  if (isLoading) {
+    return <p>Loading ....</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
+  let newsContent;
+
+  if (news) {
+    newsContent = <NewsList news={news} />;
+  }
+
+  return (
+    <>
+      <h1>NEWS PAGE</h1>
+      {newsContent}
+    </>
+  );
+}
