@@ -1,0 +1,3 @@
+Route groups are used for what they are called, we can group different routes and give them different layouts for example,
+like we did in (content) and (marketing), where the home page did not need to have the same layout as all the other pages
+so we grouped them under what is called route groupes.
